@@ -35,6 +35,10 @@ const IGNORED_PATHS = [
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // DEMO MODE: Skip auth until Phase 1 is complete
+  // TODO: Remove this when authentication is implemented
+  return NextResponse.next();
+
   // Skip static assets and Next.js internals
   if (IGNORED_PATHS.some(path => pathname.startsWith(path))) {
     return NextResponse.next();
