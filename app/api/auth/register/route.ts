@@ -1,30 +1,32 @@
 /**
+ * Register API Route
  * POST /api/auth/register
- * Register a new user and organization
+ * Creates a new user account with organization
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { prisma } from '@/lib/db/client';
 import { hashPassword, isPasswordStrong } from '@/lib/auth/password';
 import { createSession } from '@/lib/auth/session';
-import { z } from 'zod';
 
 const registerSchema = z.object({
   email: z.string().email('Invalid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
-  organizationName: z.string().min(1, 'Organization name is required'),
+  organizationName: z.string().min(1, 'Organization name is required').optional(),
 });
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const validation = registerSchema.safeParse(body);
 
+    // Validate input
+    const validation = registerSchema.safeParse(body);
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validation.error.errors },
+        { error: 'Validation failed', details: validation.error.flatten().fieldErrors },
         { status: 400 }
       );
     }
@@ -40,44 +42,34 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if user exists
+    // Check if user already exists
     const existingUser = await prisma.user.findUnique({
       where: { email: email.toLowerCase() },
     });
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'An account with this email already exists' },
-        { status: 400 }
+        { error: 'User with this email already exists' },
+        { status: 409 }
       );
     }
 
     // Hash password
     const passwordHash = await hashPassword(password);
 
-    // Generate slug from organization name
-    const baseSlug = organizationName
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/^-|-$/g, '');
-
-    // Check if slug exists and make unique if needed
-    let slug = baseSlug;
-    let slugExists = await prisma.organization.findUnique({ where: { slug } });
-    let counter = 1;
-    while (slugExists) {
-      slug = `${baseSlug}-${counter}`;
-      slugExists = await prisma.organization.findUnique({ where: { slug } });
-      counter++;
-    }
-
-    // Create user, organization, and membership in transaction
+    // Create user and organization in a transaction
     const result = await prisma.$transaction(async (tx) => {
       // Create organization
+      const orgName = organizationName || `${firstName}'s Organization`;
+      const orgSlug = orgName
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '') + '-' + Date.now().toString(36);
+
       const organization = await tx.organization.create({
         data: {
-          name: organizationName,
-          slug,
+          name: orgName,
+          slug: orgSlug,
         },
       });
 
@@ -88,16 +80,16 @@ export async function POST(request: NextRequest) {
           passwordHash,
           firstName,
           lastName,
-          lastLoginAt: new Date(),
         },
       });
 
-      // Create membership (as owner)
+      // Add user to organization as owner
       await tx.organizationMember.create({
         data: {
           userId: user.id,
           organizationId: organization.id,
           role: 'OWNER',
+          joinedAt: new Date(),
         },
       });
 
@@ -119,9 +111,10 @@ export async function POST(request: NextRequest) {
       ipAddress,
     });
 
-    // Build response
-    const response = NextResponse.json({
-      data: {
+    // Set cookies
+    const response = NextResponse.json(
+      {
+        message: 'Registration successful',
         user: {
           id: result.user.id,
           email: result.user.email,
@@ -134,10 +127,10 @@ export async function POST(request: NextRequest) {
           slug: result.organization.slug,
         },
       },
-      message: 'Registration successful',
-    });
+      { status: 201 }
+    );
 
-    // Set cookies
+    // Set HTTP-only cookies for tokens
     response.cookies.set('access_token', session.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -158,7 +151,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Registration error:', error);
     return NextResponse.json(
-      { error: 'Registration failed. Please try again.' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

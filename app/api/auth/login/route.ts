@@ -1,13 +1,14 @@
 /**
+ * Login API Route
  * POST /api/auth/login
- * Authenticate user and create session
+ * Authenticates user and creates session
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { prisma } from '@/lib/db/client';
 import { verifyPassword } from '@/lib/auth/password';
 import { createSession } from '@/lib/auth/session';
-import { z } from 'zod';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -17,11 +18,12 @@ const loginSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const validation = loginSchema.safeParse(body);
 
+    // Validate input
+    const validation = loginSchema.safeParse(body);
     if (!validation.success) {
       return NextResponse.json(
-        { error: 'Validation failed', details: validation.error.errors },
+        { error: 'Validation failed', details: validation.error.flatten().fieldErrors },
         { status: 400 }
       );
     }
@@ -33,12 +35,11 @@ export async function POST(request: NextRequest) {
       where: { email: email.toLowerCase() },
       include: {
         organizations: {
+          where: { isActive: true },
           include: {
             organization: true,
           },
-          where: {
-            isActive: true,
-          },
+          orderBy: { joinedAt: 'asc' },
         },
       },
     });
@@ -54,7 +55,7 @@ export async function POST(request: NextRequest) {
     if (!user.isActive) {
       return NextResponse.json(
         { error: 'Account is deactivated. Please contact support.' },
-        { status: 401 }
+        { status: 403 }
       );
     }
 
@@ -67,14 +68,12 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get primary organization (first one or OWNER role)
-    const primaryMembership = user.organizations.find(m => m.role === 'OWNER') ||
-                              user.organizations[0];
-
+    // Get primary organization (first one)
+    const primaryMembership = user.organizations[0];
     if (!primaryMembership) {
       return NextResponse.json(
-        { error: 'No organization associated with this account' },
-        { status: 401 }
+        { error: 'User has no organization. Please contact support.' },
+        { status: 403 }
       );
     }
 
@@ -99,33 +98,31 @@ export async function POST(request: NextRequest) {
       ipAddress,
     });
 
-    // Build response
+    // Create response
     const response = NextResponse.json({
-      data: {
-        user: {
-          id: user.id,
-          email: user.email,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          avatar: user.avatar,
-        },
-        organization: {
-          id: primaryMembership.organization.id,
-          name: primaryMembership.organization.name,
-          slug: primaryMembership.organization.slug,
-        },
-        role: primaryMembership.role,
-        organizations: user.organizations.map(m => ({
-          id: m.organization.id,
-          name: m.organization.name,
-          slug: m.organization.slug,
-          role: m.role,
-        })),
-      },
       message: 'Login successful',
+      user: {
+        id: user.id,
+        email: user.email,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        avatar: user.avatar,
+      },
+      organization: {
+        id: primaryMembership.organization.id,
+        name: primaryMembership.organization.name,
+        slug: primaryMembership.organization.slug,
+        role: primaryMembership.role,
+      },
+      organizations: user.organizations.map((m) => ({
+        id: m.organization.id,
+        name: m.organization.name,
+        slug: m.organization.slug,
+        role: m.role,
+      })),
     });
 
-    // Set cookies
+    // Set HTTP-only cookies for tokens
     response.cookies.set('access_token', session.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
@@ -146,7 +143,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Login error:', error);
     return NextResponse.json(
-      { error: 'Login failed. Please try again.' },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }

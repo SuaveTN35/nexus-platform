@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import { Deal } from '@/types';
 import { dealsApi } from '@/lib/api-client';
@@ -30,7 +31,7 @@ export function useDeals(options: UseDealsOptions = {}) {
 
   const createDeal = async (data: any) => {
     try {
-      const newDeal = await dealsApi.create(data);
+      const newDeal = (await dealsApi.create(data)) as { data: Deal };
       setDeals((prev) => [newDeal.data, ...prev]);
       return newDeal.data;
     } catch (err) {
@@ -41,7 +42,7 @@ export function useDeals(options: UseDealsOptions = {}) {
 
   const updateDeal = async (id: string, data: any) => {
     try {
-      const updated = await dealsApi.update(id, data);
+      const updated = (await dealsApi.update(id, data)) as { data: Deal };
       setDeals((prev) => prev.map((d) => (d.id === id ? updated.data : d)));
       return updated.data;
     } catch (err) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import { Campaign } from '@/types';
 import { campaignsApi } from '@/lib/api-client';
@@ -24,9 +25,9 @@ export function useCampaigns() {
     fetchCampaigns();
   }, []);
 
-  const createCampaign = async (data: any) => {
+  const createCampaign = async (data: Partial<Campaign>) => {
     try {
-      const newCampaign = await campaignsApi.create(data);
+      const newCampaign = (await campaignsApi.create(data)) as { data: Campaign };
       setCampaigns((prev) => [newCampaign.data, ...prev]);
       return newCampaign.data;
     } catch (err) {
@@ -35,9 +36,9 @@ export function useCampaigns() {
     }
   };
 
-  const updateCampaign = async (id: string, data: any) => {
+  const updateCampaign = async (id: string, data: Partial<Campaign>) => {
     try {
-      const updated = await campaignsApi.update(id, data);
+      const updated = (await campaignsApi.update(id, data)) as { data: Campaign };
       setCampaigns((prev) => prev.map((c) => (c.id === id ? updated.data : c)));
       return updated.data;
     } catch (err) {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState, useEffect } from 'react';
 import { Contact, PaginatedResponse } from '@/types';
 import { contactsApi } from '@/lib/api-client';
@@ -44,7 +45,7 @@ export function useContacts(options: UseContactsOptions = {}) {
 
   const createContact = async (data: any) => {
     try {
-      const newContact = await contactsApi.create(data);
+      const newContact = (await contactsApi.create(data)) as { data: Contact };
       setContacts((prev) => [newContact.data, ...prev]);
       return newContact.data;
     } catch (err) {
@@ -55,7 +56,7 @@ export function useContacts(options: UseContactsOptions = {}) {
 
   const updateContact = async (id: string, data: any) => {
     try {
-      const updated = await contactsApi.update(id, data);
+      const updated = (await contactsApi.update(id, data)) as { data: Contact };
       setContacts((prev) => prev.map((c) => (c.id === id ? updated.data : c)));
       return updated.data;
     } catch (err) {

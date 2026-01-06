@@ -130,3 +130,72 @@ export interface DealFormData {
   expectedCloseDate?: string;
 }
 
+// Property Types (Real Estate)
+export interface Property {
+  id: string;
+  organizationId: string;
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country: string;
+  propertyType: PropertyType;
+  status: PropertyStatus;
+  listPrice: number;
+  bedrooms: number | null;
+  bathrooms: number | null;
+  squareFeet: number | null;
+  lotSize: number | null;
+  yearBuilt: number | null;
+  title: string;
+  description: string | null;
+  features: string[];
+  photos: string[];
+  virtualTourUrl: string | null;
+  mlsNumber: string | null;
+  listingDate: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export type PropertyType =
+  | 'SINGLE_FAMILY'
+  | 'CONDO'
+  | 'TOWNHOUSE'
+  | 'MULTI_FAMILY'
+  | 'LAND'
+  | 'COMMERCIAL'
+  | 'APARTMENT'
+  | 'OTHER';
+
+export type PropertyStatus =
+  | 'DRAFT'
+  | 'ACTIVE'
+  | 'PENDING'
+  | 'SOLD'
+  | 'OFF_MARKET'
+  | 'RENTED';
+
+export interface PropertyFormData {
+  address: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  country?: string;
+  propertyType: PropertyType;
+  status?: PropertyStatus;
+  listPrice: number;
+  bedrooms?: number;
+  bathrooms?: number;
+  squareFeet?: number;
+  lotSize?: number;
+  yearBuilt?: number;
+  title: string;
+  description?: string;
+  features?: string[];
+  photos?: string[];
+  virtualTourUrl?: string;
+  mlsNumber?: string;
+  listingDate?: string;
+}
+

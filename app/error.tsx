@@ -13,7 +13,7 @@ export default function Error({
 }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-primary-50 px-4">
-      <Card padding="xl" className="max-w-md w-full text-center">
+      <Card padding="lg" className="max-w-md w-full text-center">
         <div className="mb-6">
           <h1 className="text-6xl font-bold text-red-600 mb-4">⚠️</h1>
           <h2 className="text-3xl font-bold text-primary-900 mt-4">Something went wrong!</h2>

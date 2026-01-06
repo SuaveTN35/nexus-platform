@@ -1,60 +1,101 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { Contact, ApiResponse, PaginatedResponse } from '@/types';
+/**
+ * Contacts API Routes
+ * GET /api/contacts - List contacts with pagination and search
+ * POST /api/contacts - Create a new contact
+ */
 
-// Mock data store (will be replaced with database)
-let mockContacts: Contact[] = [
-  {
-    id: '1',
-    organizationId: 'org-1',
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    phone: '+1 (555) 123-4567',
-    company: 'Acme Corp',
-    tags: ['lead', 'hot'],
-    customFields: {},
-    createdAt: new Date('2025-01-15'),
-    updatedAt: new Date('2025-01-15'),
-  },
-];
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { prisma } from '@/lib/db/client';
+import { Prisma } from '@prisma/client';
+import { PaginatedResponse } from '@/types';
+
+// Helper to get organization ID from auth headers (set by middleware)
+function getOrganizationId(request: NextRequest): string | null {
+  return request.headers.get('x-organization-id');
+}
+
+const createContactSchema = z.object({
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
+  email: z.string().email().optional().nullable(),
+  phone: z.string().optional().nullable(),
+  company: z.string().optional().nullable(),
+  tags: z.array(z.string()).optional(),
+});
 
 // GET /api/contacts
 export async function GET(request: NextRequest) {
   try {
-    const searchParams = request.nextUrl.searchParams;
-    const page = parseInt(searchParams.get('page') || '1');
-    const pageSize = parseInt(searchParams.get('pageSize') || '10');
-    const search = searchParams.get('search') || '';
+    const organizationId = getOrganizationId(request);
 
-    let filteredContacts = mockContacts;
-
-    // Apply search filter
-    if (search) {
-      filteredContacts = mockContacts.filter(
-        (contact) =>
-          contact.firstName.toLowerCase().includes(search.toLowerCase()) ||
-          contact.lastName.toLowerCase().includes(search.toLowerCase()) ||
-          contact.email?.toLowerCase().includes(search.toLowerCase())
-      );
+    // For now, if no org ID (demo mode), use a default or return empty
+    if (!organizationId) {
+      // Demo mode - return empty list or could query all
+      return NextResponse.json({
+        data: [],
+        pagination: { page: 1, pageSize: 10, total: 0, totalPages: 0 },
+      });
     }
 
-    // Apply pagination
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const paginatedContacts = filteredContacts.slice(startIndex, endIndex);
+    const searchParams = request.nextUrl.searchParams;
+    const page = Math.max(1, parseInt(searchParams.get('page') || '1'));
+    const pageSize = Math.min(100, Math.max(1, parseInt(searchParams.get('pageSize') || '10')));
+    const search = searchParams.get('search') || '';
 
-    const response: PaginatedResponse<Contact> = {
-      data: paginatedContacts,
+    // Build where clause
+    const where: Prisma.ContactWhereInput = {
+      organizationId,
+    };
+
+    if (search) {
+      where.OR = [
+        { firstName: { contains: search, mode: 'insensitive' } },
+        { lastName: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+        { company: { contains: search, mode: 'insensitive' } },
+      ];
+    }
+
+    // Get total count
+    const total = await prisma.contact.count({ where });
+
+    // Get paginated contacts
+    const contacts = await prisma.contact.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip: (page - 1) * pageSize,
+      take: pageSize,
+    });
+
+    // Transform to match frontend types
+    const data = contacts.map((c) => ({
+      id: c.id,
+      organizationId: c.organizationId,
+      firstName: c.firstName,
+      lastName: c.lastName,
+      email: c.email,
+      phone: c.phone,
+      company: c.company,
+      tags: (c.tags as string[]) || [],
+      customFields: (c.customFields as Record<string, unknown>) || {},
+      createdAt: c.createdAt,
+      updatedAt: c.updatedAt,
+    }));
+
+    const response: PaginatedResponse<typeof data[0]> = {
+      data,
       pagination: {
         page,
         pageSize,
-        total: filteredContacts.length,
-        totalPages: Math.ceil(filteredContacts.length / pageSize),
+        total,
+        totalPages: Math.ceil(total / pageSize),
       },
     };
 
     return NextResponse.json(response);
   } catch (error) {
+    console.error('Failed to fetch contacts:', error);
     return NextResponse.json(
       { error: 'Failed to fetch contacts' },
       { status: 500 }
@@ -65,32 +106,63 @@ export async function GET(request: NextRequest) {
 // POST /api/contacts
 export async function POST(request: NextRequest) {
   try {
+    const organizationId = getOrganizationId(request);
+
+    if (!organizationId) {
+      return NextResponse.json(
+        { error: 'Organization ID required' },
+        { status: 401 }
+      );
+    }
+
     const body = await request.json();
-    const { firstName, lastName, email, phone, company, tags } = body;
 
-    const newContact: Contact = {
-      id: Date.now().toString(),
-      organizationId: 'org-1', // TODO: Get from auth context
-      firstName,
-      lastName,
-      email: email || null,
-      phone: phone || null,
-      company: company || null,
-      tags: tags || [],
-      customFields: {},
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
+    // Validate input
+    const validation = createContactSchema.safeParse(body);
+    if (!validation.success) {
+      return NextResponse.json(
+        { error: 'Validation failed', details: validation.error.flatten().fieldErrors },
+        { status: 400 }
+      );
+    }
 
-    mockContacts.push(newContact);
+    const { firstName, lastName, email, phone, company, tags } = validation.data;
 
-    const response: ApiResponse<Contact> = {
-      data: newContact,
-      message: 'Contact created successfully',
-    };
+    // Create contact in database
+    const contact = await prisma.contact.create({
+      data: {
+        organizationId,
+        firstName,
+        lastName,
+        email: email || null,
+        phone: phone || null,
+        company: company || null,
+        tags: tags || [],
+        customFields: {},
+      },
+    });
 
-    return NextResponse.json(response, { status: 201 });
+    return NextResponse.json(
+      {
+        data: {
+          id: contact.id,
+          organizationId: contact.organizationId,
+          firstName: contact.firstName,
+          lastName: contact.lastName,
+          email: contact.email,
+          phone: contact.phone,
+          company: contact.company,
+          tags: (contact.tags as string[]) || [],
+          customFields: (contact.customFields as Record<string, unknown>) || {},
+          createdAt: contact.createdAt,
+          updatedAt: contact.updatedAt,
+        },
+        message: 'Contact created successfully',
+      },
+      { status: 201 }
+    );
   } catch (error) {
+    console.error('Failed to create contact:', error);
     return NextResponse.json(
       { error: 'Failed to create contact' },
       { status: 500 }

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { ToastProvider } from '@/components/ui/Toast';
 import { AppProvider } from '@/contexts/AppContext';
+import { ThemeProvider } from '@/contexts/ThemeContext';
 
 export const metadata: Metadata = {
   title: 'NEXUS Platform - AI-Native Business Intelligence',
@@ -25,11 +26,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className="antialiased">
-        <AppProvider>
-          <ToastProvider>{children}</ToastProvider>
-        </AppProvider>
+        <ThemeProvider>
+          <AppProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </AppProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

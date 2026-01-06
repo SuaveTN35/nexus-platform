@@ -35,9 +35,10 @@ const IGNORED_PATHS = [
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // DEMO MODE: Skip auth until Phase 1 is complete
-  // TODO: Remove this when authentication is implemented
-  return NextResponse.next();
+  // Check for demo mode header or cookie (for testing without auth)
+  const isDemoMode = request.headers.get('x-demo-mode') === 'true' ||
+                     request.cookies.get('demo_mode')?.value === 'true' ||
+                     process.env.DEMO_MODE === 'true';
 
   // Skip static assets and Next.js internals
   if (IGNORED_PATHS.some(path => pathname.startsWith(path))) {
@@ -57,6 +58,39 @@ export function middleware(request: NextRequest) {
   // Check for access token
   const accessToken = request.cookies.get('access_token')?.value;
   const refreshToken = request.cookies.get('refresh_token')?.value;
+
+  // If we have a token, try to decode it and set headers (even in demo mode)
+  if (accessToken) {
+    try {
+      const [, payloadBase64] = accessToken.split('.');
+      if (payloadBase64) {
+        const payload = JSON.parse(
+          Buffer.from(payloadBase64, 'base64').toString('utf-8')
+        );
+
+        // Only use token if not expired
+        if (!payload.exp || payload.exp * 1000 >= Date.now()) {
+          const requestHeaders = new Headers(request.headers);
+          requestHeaders.set('x-user-id', payload.userId || '');
+          requestHeaders.set('x-user-email', payload.email || '');
+          requestHeaders.set('x-organization-id', payload.organizationId || '');
+          requestHeaders.set('x-user-role', payload.role || '');
+
+          return NextResponse.next({
+            request: { headers: requestHeaders },
+          });
+        }
+      }
+    } catch {
+      // Token invalid, continue to demo mode check or auth flow
+    }
+  }
+
+  // Demo mode - allow access without auth (for development/testing)
+  if (isDemoMode) {
+    // In demo mode without valid token, APIs will return empty data
+    return NextResponse.next();
+  }
 
   // No tokens - redirect to login or return 401 for API
   if (!accessToken) {

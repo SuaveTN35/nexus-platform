@@ -42,15 +42,20 @@ model Session {
 }
 
 model Organization {
-  id        String               @id @default(uuid())
-  name      String
-  slug      String               @unique
-  createdAt DateTime             @default(now())
-  updatedAt DateTime             @updatedAt
-  members   OrganizationMember[]
-  contacts  Contact[]
-  campaigns Campaign[]
-  deals     Deal[]
+  id               String               @id @default(uuid())
+  name             String
+  slug             String               @unique
+  stripeCustomerId String?              @unique
+  createdAt        DateTime             @default(now())
+  updatedAt        DateTime             @updatedAt
+  members          OrganizationMember[]
+  contacts         Contact[]
+  campaigns        Campaign[]
+  deals            Deal[]
+  properties       Property[]
+  subscription     Subscription?
+  usageRecords     UsageRecord[]
+  invoices         Invoice[]
 }
 
 model OrganizationMember {
@@ -140,4 +145,255 @@ enum DealStatus {
   OPEN
   WON
   LOST
+}
+
+// ============================================
+// REAL ESTATE MODELS
+// ============================================
+
+model Property {
+  id             String         @id @default(uuid())
+  organizationId String
+
+  // Address
+  address        String
+  city           String
+  state          String
+  zipCode        String
+  country        String         @default("USA")
+
+  // Property Details
+  propertyType   PropertyType
+  status         PropertyStatus @default(DRAFT)
+  listPrice      Decimal        @db.Decimal(12, 2)
+  bedrooms       Int?
+  bathrooms      Decimal?       @db.Decimal(3, 1)
+  squareFeet     Int?
+  lotSize        Decimal?       @db.Decimal(10, 2)
+  yearBuilt      Int?
+
+  // Description
+  title          String
+  description    String?
+  features       Json?          // Array of feature strings
+
+  // Media
+  photos         Json?          // Array of photo URLs
+  virtualTourUrl String?
+
+  // Listing Info
+  mlsNumber      String?
+  listingDate    DateTime?
+
+  // Timestamps
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  // Relations
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([status])
+  @@index([propertyType])
+  @@index([city, state])
+}
+
+enum PropertyType {
+  SINGLE_FAMILY
+  CONDO
+  TOWNHOUSE
+  MULTI_FAMILY
+  LAND
+  COMMERCIAL
+  APARTMENT
+  OTHER
+}
+
+enum PropertyStatus {
+  DRAFT
+  ACTIVE
+  PENDING
+  SOLD
+  OFF_MARKET
+  RENTED
+}
+
+// ============================================
+// SUBSCRIPTION & BILLING MODELS
+// ============================================
+
+model Plan {
+  id                  String         @id @default(uuid())
+  name                String         @unique
+  slug                String         @unique
+  description         String?
+
+  // Pricing
+  monthlyPrice        Decimal        @db.Decimal(10, 2)
+  yearlyPrice         Decimal        @db.Decimal(10, 2)
+  stripePriceIdMonthly String?
+  stripePriceIdYearly  String?
+
+  // Feature Limits
+  maxContacts         Int
+  maxProperties       Int
+  maxTeamMembers      Int
+  maxCampaignsPerMonth Int
+  maxEmailsPerMonth   Int
+
+  // Feature Flags
+  hasApiAccess        Boolean        @default(false)
+  hasAdvancedAnalytics Boolean       @default(false)
+  hasPrioritySupport  Boolean        @default(false)
+  hasCustomIntegrations Boolean      @default(false)
+  hasWhiteLabeling    Boolean        @default(false)
+
+  // Metadata
+  isActive            Boolean        @default(true)
+  displayOrder        Int            @default(0)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  subscriptions       Subscription[]
+
+  @@index([isActive])
+  @@index([slug])
+}
+
+model Subscription {
+  id                   String             @id @default(uuid())
+  organizationId       String             @unique
+  planId               String
+
+  // Stripe IDs
+  stripeSubscriptionId String?            @unique
+  stripePriceId        String?
+
+  // Status
+  status               SubscriptionStatus @default(TRIALING)
+  billingCycle         BillingCycle       @default(MONTHLY)
+
+  // Dates
+  currentPeriodStart   DateTime
+  currentPeriodEnd     DateTime
+  trialEndsAt          DateTime?
+  canceledAt           DateTime?
+  cancelAtPeriodEnd    Boolean            @default(false)
+
+  // Timestamps
+  createdAt            DateTime           @default(now())
+  updatedAt            DateTime           @updatedAt
+
+  // Relations
+  organization         Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  plan                 Plan               @relation(fields: [planId], references: [id])
+
+  @@index([status])
+  @@index([planId])
+}
+
+enum SubscriptionStatus {
+  TRIALING
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  UNPAID
+  PAUSED
+}
+
+enum BillingCycle {
+  MONTHLY
+  YEARLY
+}
+
+model UsageRecord {
+  id             String       @id @default(uuid())
+  organizationId String
+
+  // Usage Metrics (monthly reset)
+  month          DateTime     // First day of the month
+  contactsCount  Int          @default(0)
+  propertiesCount Int         @default(0)
+  campaignsSent  Int          @default(0)
+  emailsSent     Int          @default(0)
+  apiCalls       Int          @default(0)
+
+  // Timestamps
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  // Relations
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@unique([organizationId, month])
+  @@index([organizationId])
+  @@index([month])
+}
+
+model Invoice {
+  id                 String        @id @default(uuid())
+  organizationId     String
+  stripeInvoiceId    String?       @unique
+
+  // Invoice Details
+  amount             Decimal       @db.Decimal(10, 2)
+  currency           String        @default("usd")
+  status             InvoiceStatus @default(DRAFT)
+
+  // Dates
+  invoiceDate        DateTime
+  dueDate            DateTime?
+  paidAt             DateTime?
+
+  // PDF/Receipt
+  invoiceUrl         String?
+  receiptUrl         String?
+
+  // Timestamps
+  createdAt          DateTime      @default(now())
+  updatedAt          DateTime      @updatedAt
+
+  // Relations
+  organization       Organization  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@index([organizationId])
+  @@index([status])
+  @@index([invoiceDate])
+}
+
+enum InvoiceStatus {
+  DRAFT
+  OPEN
+  PAID
+  VOID
+  UNCOLLECTIBLE
+}
+
+// ============================================
+// TEAM INVITATIONS
+// ============================================
+
+model TeamInvite {
+  id             String           @id @default(uuid())
+  organizationId String
+  email          String
+  role           MemberRole       @default(MEMBER)
+  token          String           @unique @default(uuid())
+  status         InviteStatus     @default(PENDING)
+  invitedById    String
+  expiresAt      DateTime
+  acceptedAt     DateTime?
+  createdAt      DateTime         @default(now())
+
+  @@unique([organizationId, email])
+  @@index([token])
+  @@index([email])
+  @@index([organizationId])
+}
+
+enum InviteStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  REVOKED
 }

@@ -41,7 +41,7 @@ export class ErrorBoundary extends Component<Props, State> {
               <div className="text-6xl mb-4">⚠️</div>
               <h1 className="text-2xl font-bold text-primary-900 mb-2">Something went wrong</h1>
               <p className="text-primary-600 mb-6">
-                We're sorry, but something unexpected happened. Please try refreshing the page.
+                We&apos;re sorry, but something unexpected happened. Please try refreshing the page.
               </p>
               {this.state.error && (
                 <details className="mb-6 text-left">
