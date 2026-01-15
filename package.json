@@ -1,8 +1,8 @@
 {
-  "name": "nexus-platform",
+  "name": "aequalis-platform",
   "version": "0.1.0",
   "private": true,
-  "description": "NEXUS Platform - Next-generation AI-native business management platform",
+  "description": "AEQUALIS Platform - Next-generation AI-native business management platform",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

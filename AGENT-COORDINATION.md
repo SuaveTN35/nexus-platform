@@ -1,9 +1,9 @@
-# NEXUS Platform - Agent Coordination Protocol
+# AEQUALIS Platform - Agent Coordination Protocol
 
 ```
 ╔═══════════════════════════════════════════════════════════════════════════════╗
 ║                    MULTI-AGENT COORDINATION PROTOCOL                          ║
-║                         NEXUS Platform Development                            ║
+║                         AEQUALIS Platform Development                            ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -42,7 +42,7 @@
 
 ### Recently Completed (Database Setup)
 - [x] Install PostgreSQL 16 via Homebrew (Claude Code)
-- [x] Create nexus_platform database (Claude Code)
+- [x] Create aequalis_platform database (Claude Code)
 - [x] Configure DATABASE_URL in .env (Claude Code)
 - [x] Run Prisma migrations - all tables created (Claude Code)
 - [x] Regenerate Prisma client (Claude Code)
@@ -110,7 +110,7 @@ Any additional context
 ## Current File Structure
 
 ```
-nexus-platform/
+aequalis-platform/
 ├── app/
 │   ├── api/
 │   │   ├── auth/           # ✅ NEW - Auth endpoints
@@ -196,7 +196,7 @@ npm run test:watch             # Watch mode
 last_update: "2026-01-05T19:15:00Z"
 active_branch: "main"
 database_status: "connected_postgresql_16_local"
-database_name: "nexus_platform"
+database_name: "aequalis_platform"
 auth_status: "implemented_pages_complete"
 prisma_client: "generated"
 migrations: "applied"

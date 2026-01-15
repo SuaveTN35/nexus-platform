@@ -8,7 +8,7 @@ import Select, { SelectOption } from '@/components/ui/Select';
 import { Property, PropertyFormData, PropertyType, PropertyStatus } from '@/types';
 
 /**
- * NEXUS Properties - GoHighLevel-Style CRM View
+ * AEQUALIS Properties - GoHighLevel-Style CRM View
  * Design System: Professional CRM with data tables
  * Features: Filters, bulk actions, status management
  */

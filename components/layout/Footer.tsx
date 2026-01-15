@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="grid md:grid-cols-4 gap-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-xl font-bold mb-4">NEXUS Platform</h3>
+            <h3 className="text-xl font-bold mb-4">AEQUALIS Platform</h3>
             <p className="text-primary-300 text-sm">
               AI-Native Business Intelligence Platform. Built for the future of business operations.
             </p>
@@ -99,7 +99,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-primary-800 mt-8 pt-8 text-center text-sm text-primary-300">
-          <p>© {currentYear} NEXUS Platform. All rights reserved.</p>
+          <p>© {currentYear} AEQUALIS Platform. All rights reserved.</p>
         </div>
       </div>
     </footer>

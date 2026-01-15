@@ -8,7 +8,7 @@
 ## Quick Start (Copy & Paste)
 
 ```bash
-cd "/Users/suavetn/Claude Repo Master/nexus-platform"
+cd "/Users/suavetn/Claude Repo Master/aequalis-platform"
 npm install
 npm run dev
 ```
@@ -21,7 +21,7 @@ Then open: **http://localhost:3000**
 
 Try:
 ```bash
-cd "/Users/suavetn/Claude Repo Master/nexus-platform"
+cd "/Users/suavetn/Claude Repo Master/aequalis-platform"
 npm install --legacy-peer-deps
 npm run dev
 ```

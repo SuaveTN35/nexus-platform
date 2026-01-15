@@ -1,4 +1,4 @@
-# NEXUS Platform - Deployment Guide
+# AEQUALIS Platform - Deployment Guide
 
 **Version:** 1.0  
 **Last Updated:** January 20, 2025
@@ -110,10 +110,10 @@ CMD ["node", "server.js"]
 
 ```bash
 # Build image
-docker build -t nexus-platform .
+docker build -t aequalis-platform .
 
 # Run container
-docker run -p 3000:3000 --env-file .env nexus-platform
+docker run -p 3000:3000 --env-file .env aequalis-platform
 ```
 
 ---
@@ -147,7 +147,7 @@ docker run -p 3000:3000 --env-file .env nexus-platform
 4. **Use process manager (PM2)**
    ```bash
    npm install -g pm2
-   pm2 start npm --name "nexus-platform" -- start
+   pm2 start npm --name "aequalis-platform" -- start
    pm2 save
    pm2 startup
    ```
@@ -190,9 +190,9 @@ See `.env.example` for all required environment variables.
 
 2. **Create Database**
    ```sql
-   CREATE DATABASE nexus_platform;
-   CREATE USER nexus_user WITH PASSWORD 'your_password';
-   GRANT ALL PRIVILEGES ON DATABASE nexus_platform TO nexus_user;
+   CREATE DATABASE aequalis_platform;
+   CREATE USER aequalis_user WITH PASSWORD 'your_password';
+   GRANT ALL PRIVILEGES ON DATABASE aequalis_platform TO aequalis_user;
    ```
 
 3. **Run Migrations** (when migrations are set up)

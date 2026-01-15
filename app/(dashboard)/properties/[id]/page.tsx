@@ -8,7 +8,7 @@ import Modal from '@/components/ui/Modal';
 import { Property, PropertyFormData, PropertyType, PropertyStatus } from '@/types';
 
 /**
- * NEXUS Property Detail - Compass-Style Luxury Minimalist Design
+ * AEQUALIS Property Detail - Compass-Style Luxury Minimalist Design
  * Design System: Monochromatic (Black/White/Gray)
  * Typography: System fonts with clear hierarchy
  * Focus: Photography-first, data clarity, minimal UI chrome

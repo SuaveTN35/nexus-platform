@@ -1,4 +1,4 @@
-# NEXUS Platform
+# AEQUALIS Platform
 
 Next-generation AI-native business intelligence platform. Built to outperform GoHighLevel through superior architecture, predictive intelligence, and autonomous operations.
 
@@ -37,7 +37,7 @@ npm start
 ## 📁 Project Structure
 
 ```
-nexus-platform/
+aequalis-platform/
 ├── app/                    # Next.js App Router
 │   ├── layout.tsx         # Root layout
 │   ├── page.tsx           # Homepage

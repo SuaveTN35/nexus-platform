@@ -1,4 +1,4 @@
-# NEXUS Platform - Project Ready! 🚀
+# AEQUALIS Platform - Project Ready! 🚀
 
 **Status:** ✅ **Ready for Development**  
 **Date:** January 20, 2025
@@ -7,7 +7,7 @@
 
 ## 🎉 Project Status: READY
 
-The NEXUS Platform foundation is **complete and ready** for the next phase of development!
+The AEQUALIS Platform foundation is **complete and ready** for the next phase of development!
 
 ---
 
@@ -58,7 +58,7 @@ npm run dev
 ### For Phase 1 Setup
 ```bash
 # 1. Set up database (PostgreSQL)
-# Create database: createdb nexus_platform
+# Create database: createdb aequalis_platform
 
 # 2. Run migrations
 npx prisma generate
@@ -156,7 +156,7 @@ We've built:
 
 ---
 
-**The NEXUS Platform is ready to build the future of business intelligence!** 🚀
+**The AEQUALIS Platform is ready to build the future of business intelligence!** 🚀
 
 *Everything is in place. Let's build something amazing.*
 

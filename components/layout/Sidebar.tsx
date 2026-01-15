@@ -191,10 +191,10 @@ export default function Sidebar() {
       <div className="h-16 flex items-center justify-between px-4 border-b border-sidebar-border">
         <Link href="/dashboard" className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-primary-600 flex items-center justify-center">
-            <span className="text-white font-bold text-sm">N</span>
+            <span className="text-white font-bold text-sm">A</span>
           </div>
           {!isCollapsed && (
-            <span className="text-white font-semibold text-lg tracking-tight">NEXUS</span>
+            <span className="text-white font-semibold text-lg tracking-tight">AEQUALIS</span>
           )}
         </Link>
         <button
@@ -323,7 +323,7 @@ export default function Sidebar() {
               </div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-white truncate">John Doe</p>
-                <p className="text-xs text-sidebar-text truncate">demo@nexus.com</p>
+                <p className="text-xs text-sidebar-text truncate">demo@aequalis.com</p>
               </div>
               <button className="p-1.5 text-sidebar-text hover:text-white rounded transition-colors">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

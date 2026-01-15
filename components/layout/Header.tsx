@@ -13,7 +13,7 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold text-primary-900">NEXUS</div>
+            <div className="text-2xl font-bold text-primary-900">AEQUALIS</div>
           </Link>
 
           {/* Desktop Navigation */}

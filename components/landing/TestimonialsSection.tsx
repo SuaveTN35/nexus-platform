@@ -1,6 +1,6 @@
 const testimonials = [
   {
-    quote: "NEXUS replaced 5 different tools we were using. Our team productivity increased by 40% in the first month.",
+    quote: "AEQUALIS replaced 5 different tools we were using. Our team productivity increased by 40% in the first month.",
     author: "Sarah Chen",
     role: "CEO",
     company: "TechStart Ventures",
@@ -21,7 +21,7 @@ const testimonials = [
     image: null,
   },
   {
-    quote: "We've tried every platform out there. NEXUS is the only one that actually delivers on its AI promises.",
+    quote: "We've tried every platform out there. AEQUALIS is the only one that actually delivers on its AI promises.",
     author: "David Park",
     role: "Founder",
     company: "CloudScale Solutions",
@@ -54,7 +54,7 @@ export default function TestimonialsSection() {
             Loved by teams everywhere
           </h2>
           <p className="mt-4 text-lg text-gray-600">
-            See why 2,000+ businesses trust NEXUS to power their growth
+            See why 2,000+ businesses trust AEQUALIS to power their growth
           </p>
         </div>
 

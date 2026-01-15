@@ -86,7 +86,7 @@ Before starting Phase 1, ensure you have:
 ## 📁 Phase 1 File Structure
 
 ```
-nexus-platform/
+aequalis-platform/
 ├── prisma/                    # If using Prisma
 │   ├── schema.prisma
 │   └── migrations/

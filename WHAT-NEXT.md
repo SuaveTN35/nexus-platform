@@ -1,6 +1,6 @@
 # What's Next? 🚀
 
-**Your roadmap for continuing NEXUS Platform development**
+**Your roadmap for continuing AEQUALIS Platform development**
 
 ---
 
@@ -20,7 +20,7 @@
 
 1. **Install Dependencies**
    ```bash
-   cd "/Users/suavetn/Claude Repo Master/nexus-platform"
+   cd "/Users/suavetn/Claude Repo Master/aequalis-platform"
    npm install
    ```
 
@@ -60,7 +60,7 @@
 
 2. **Create Database**
    ```bash
-   createdb nexus_platform
+   createdb aequalis_platform
    ```
 
 3. **Configure Environment**

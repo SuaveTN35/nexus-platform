@@ -1,4 +1,4 @@
-# Preview the NEXUS Platform
+# Preview the AEQUALIS Platform
 
 **Quick guide to preview the platform locally**
 
@@ -9,7 +9,7 @@
 ### Step 1: Install Dependencies
 
 ```bash
-cd "/Users/suavetn/Claude Repo Master/nexus-platform"
+cd "/Users/suavetn/Claude Repo Master/aequalis-platform"
 npm install
 ```
 
@@ -43,7 +43,7 @@ Once the server is running, you can visit:
 ## 🎨 What You'll See
 
 ### Homepage Features
-- Hero section with NEXUS Platform branding
+- Hero section with AEQUALIS Platform branding
 - Feature cards (AI-Native, Predictive Intelligence, etc.)
 - Call-to-action buttons
 - Professional navy/gold color scheme

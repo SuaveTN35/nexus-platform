@@ -27,7 +27,7 @@ interface EmailDraft {
 }
 
 const mockTemplates: EmailTemplate[] = [
-  { id: '1', name: 'Welcome Email', subject: 'Welcome to NEXUS!', openRate: 68, clickRate: 24, sentCount: 1250, lastUsed: '2025-01-05' },
+  { id: '1', name: 'Welcome Email', subject: 'Welcome to AEQUALIS!', openRate: 68, clickRate: 24, sentCount: 1250, lastUsed: '2025-01-05' },
   { id: '2', name: 'Monthly Newsletter', subject: 'Your Monthly Update', openRate: 42, clickRate: 12, sentCount: 3200, lastUsed: '2025-01-01' },
   { id: '3', name: 'Follow-up', subject: 'Just checking in...', openRate: 55, clickRate: 18, sentCount: 890, lastUsed: '2024-12-28' },
   { id: '4', name: 'Product Announcement', subject: 'Exciting New Features!', openRate: 61, clickRate: 28, sentCount: 2100, lastUsed: '2024-12-20' },

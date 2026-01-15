@@ -1,5 +1,5 @@
 /**
- * Core Type Definitions for NEXUS Platform
+ * Core Type Definitions for AEQUALIS Platform
  */
 
 // User Types

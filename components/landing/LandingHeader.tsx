@@ -28,10 +28,10 @@ export default function LandingHeader() {
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2">
             <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/25">
-              <span className="text-white font-bold text-lg">N</span>
+              <span className="text-white font-bold text-lg">A</span>
             </div>
             <span className={`font-bold text-xl ${isScrolled ? 'text-gray-900' : 'text-gray-900'}`}>
-              NEXUS
+              AEQUALIS
             </span>
           </Link>
 

@@ -5,17 +5,17 @@ import { AppProvider } from '@/contexts/AppContext';
 import { ThemeProvider } from '@/contexts/ThemeContext';
 
 export const metadata: Metadata = {
-  title: 'NEXUS Platform - AI-Native Business Intelligence',
+  title: 'AEQUALIS Platform - AI-Native Business Intelligence',
   description: 'Next-generation all-in-one business management platform with AI-native architecture',
   openGraph: {
-    title: 'NEXUS Platform - AI-Native Business Intelligence',
+    title: 'AEQUALIS Platform - AI-Native Business Intelligence',
     description: 'Next-generation all-in-one business management platform with AI-native architecture',
     type: 'website',
-    siteName: 'NEXUS Platform',
+    siteName: 'AEQUALIS Platform',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NEXUS Platform - AI-Native Business Intelligence',
+    title: 'AEQUALIS Platform - AI-Native Business Intelligence',
     description: 'Next-generation all-in-one business management platform with AI-native architecture',
   },
 };

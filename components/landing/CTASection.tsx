@@ -15,7 +15,7 @@ export default function CTASection() {
           Ready to transform your business?
         </h2>
         <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-          Join thousands of businesses already using NEXUS to grow faster.
+          Join thousands of businesses already using AEQUALIS to grow faster.
           Start your free trial today — no credit card required.
         </p>
 

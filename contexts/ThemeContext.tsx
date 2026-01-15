@@ -19,7 +19,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Load theme from localStorage on mount
   useEffect(() => {
     setMounted(true);
-    const savedTheme = localStorage.getItem('nexus-theme') as Theme | null;
+    const savedTheme = localStorage.getItem('aequalis-theme') as Theme | null;
     if (savedTheme) {
       setThemeState(savedTheme);
     } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -37,7 +37,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     } else {
       root.classList.remove('dark');
     }
-    localStorage.setItem('nexus-theme', theme);
+    localStorage.setItem('aequalis-theme', theme);
   }, [theme, mounted]);
 
   const toggleTheme = useCallback(() => {

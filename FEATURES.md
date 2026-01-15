@@ -1,4 +1,4 @@
-# NEXUS Platform - Feature List
+# AEQUALIS Platform - Feature List
 
 **Last Updated:** January 20, 2025  
 **Status:** Phase 0 - 80% Complete

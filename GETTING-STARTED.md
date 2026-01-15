@@ -1,6 +1,6 @@
-# Getting Started with NEXUS Platform
+# Getting Started with AEQUALIS Platform
 
-Welcome to the NEXUS Platform! This guide will help you get up and running quickly.
+Welcome to the AEQUALIS Platform! This guide will help you get up and running quickly.
 
 ---
 
@@ -15,7 +15,7 @@ Welcome to the NEXUS Platform! This guide will help you get up and running quick
 ### Step 1: Install Dependencies
 
 ```bash
-cd nexus-platform
+cd aequalis-platform
 npm install
 ```
 
@@ -36,7 +36,7 @@ Navigate to [http://localhost:3000](http://localhost:3000)
 ## 📁 Project Structure
 
 ```
-nexus-platform/
+aequalis-platform/
 ├── app/                    # Next.js App Router (pages & routes)
 │   ├── api/               # API endpoints
 │   ├── dashboard/         # Dashboard pages
@@ -218,7 +218,7 @@ npm run type-check
 
 ## 🎉 You're All Set!
 
-The NEXUS Platform foundation is complete and ready for development.
+The AEQUALIS Platform foundation is complete and ready for development.
 
 **Happy Coding!** 🚀
 

@@ -1,4 +1,4 @@
-# NEXUS Platform - Build Summary
+# AEQUALIS Platform - Build Summary
 
 **Build Date:** January 20, 2025  
 **Phase:** Phase 0 - Foundation  
@@ -11,7 +11,7 @@
 
 ### Complete Feature Set
 
-We've successfully built a comprehensive, production-ready foundation for the NEXUS Platform with:
+We've successfully built a comprehensive, production-ready foundation for the AEQUALIS Platform with:
 
 #### ✅ Pages (10 Complete Pages)
 1. **Homepage** - Landing page with features and CTA
@@ -118,7 +118,7 @@ We've successfully built a comprehensive, production-ready foundation for the NE
 
 ### Project Structure
 ```
-nexus-platform/
+aequalis-platform/
 ├── app/                    # Next.js App Router
 │   ├── api/               # API routes
 │   ├── auth/              # Authentication pages

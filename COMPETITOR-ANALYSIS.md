@@ -1,7 +1,7 @@
 # Competitor Analysis: Top 3 Real Estate CRMs on GitHub
 
 **Analysis Date:** 2026-01-05
-**Purpose:** Identify features to improve NEXUS Platform
+**Purpose:** Identify features to improve AEQUALIS Platform
 
 ---
 
@@ -105,7 +105,7 @@ signature_requests, signature_audit_log, task_templates
 
 ## Feature Comparison Matrix
 
-| Feature | adminlornell | prolinkinfo | GrowCRM | NEXUS (Current) |
+| Feature | adminlornell | prolinkinfo | GrowCRM | AEQUALIS (Current) |
 |---------|:------------:|:-----------:|:-------:|:---------------:|
 | **Database** | PostgreSQL | MongoDB | MongoDB | PostgreSQL |
 | **Properties Module** | ✅ Full | ✅ Full | ✅ Projects | ❌ Missing |
@@ -126,7 +126,7 @@ signature_requests, signature_audit_log, task_templates
 
 ---
 
-## Critical Gaps for NEXUS Platform
+## Critical Gaps for AEQUALIS Platform
 
 ### Tier 1: Must Have (Blocking for Real Estate CRM)
 
@@ -253,9 +253,9 @@ npm install date-fns
 
 ---
 
-## NEXUS Competitive Differentiators
+## AEQUALIS Competitive Differentiators
 
-While adopting these features, NEXUS can stand out with:
+While adopting these features, AEQUALIS can stand out with:
 
 1. **AI-Powered Lead Scoring** - ML-based, not just rules
 2. **Predictive Analytics** - Close probability forecasting

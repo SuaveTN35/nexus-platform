@@ -8,7 +8,7 @@
 
 ## 🎉 Congratulations!
 
-Phase 0 - Foundation is **100% complete**! You now have a comprehensive, production-ready foundation for the NEXUS Platform.
+Phase 0 - Foundation is **100% complete**! You now have a comprehensive, production-ready foundation for the AEQUALIS Platform.
 
 ---
 

@@ -1,4 +1,4 @@
-# View the NEXUS Platform 🚀
+# View the AEQUALIS Platform 🚀
 
 **Quick guide to see the platform in action**
 
@@ -9,7 +9,7 @@
 ### Step 1: Install Dependencies
 
 ```bash
-cd "/Users/suavetn/Claude Repo Master/nexus-platform"
+cd "/Users/suavetn/Claude Repo Master/aequalis-platform"
 npm install
 ```
 
@@ -189,7 +189,7 @@ npm run dev
 
 ---
 
-**Enjoy exploring the NEXUS Platform!** 🎉
+**Enjoy exploring the AEQUALIS Platform!** 🎉
 
 *All pages are functional and ready to use.*
 

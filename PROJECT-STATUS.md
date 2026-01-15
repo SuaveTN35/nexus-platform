@@ -1,4 +1,4 @@
-# NEXUS Platform - Project Status
+# AEQUALIS Platform - Project Status
 
 **Last Updated:** January 20, 2025  
 **Phase:** Phase 0 - Foundation (Week 1)  

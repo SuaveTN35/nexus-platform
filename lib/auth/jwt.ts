@@ -5,7 +5,7 @@
 
 import jwt from 'jsonwebtoken';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'nexus-platform-secret-change-in-production';
+const JWT_SECRET = process.env.JWT_SECRET || 'aequalis-platform-secret-change-in-production';
 const JWT_EXPIRES_IN = '15m';
 const REFRESH_TOKEN_EXPIRES_IN = '7d';
 

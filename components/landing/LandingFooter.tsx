@@ -78,9 +78,9 @@ export default function LandingFooter() {
           <div className="col-span-2">
             <Link href="/" className="flex items-center gap-2 mb-6">
               <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">N</span>
+                <span className="text-white font-bold text-lg">A</span>
               </div>
-              <span className="font-bold text-xl text-white">NEXUS</span>
+              <span className="font-bold text-xl text-white">AEQUALIS</span>
             </Link>
             <p className="text-sm text-gray-400 mb-6 max-w-xs">
               The all-in-one platform for growing your business. CRM, marketing, sales, and analytics — powered by AI.
@@ -159,7 +159,7 @@ export default function LandingFooter() {
         {/* Bottom */}
         <div className="mt-16 pt-8 border-t border-gray-800 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-sm text-gray-400">
-            &copy; {new Date().getFullYear()} NEXUS Platform. All rights reserved.
+            &copy; {new Date().getFullYear()} AEQUALIS Platform. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <span className="text-sm text-gray-400">

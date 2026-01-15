@@ -1,10 +1,10 @@
 /**
  * Platform Constants
- * Core configuration and constants for the NEXUS platform
+ * Core configuration and constants for the AEQUALIS platform
  */
 
 export const PLATFORM_CONFIG = {
-  name: 'NEXUS Platform',
+  name: 'AEQUALIS Platform',
   tagline: 'AI-Native Business Intelligence',
   version: '0.1.0',
   description: 'Next-generation all-in-one business management platform',

@@ -94,9 +94,9 @@ export default function OnboardingPage() {
       <div className="flex items-center justify-between px-6 py-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-            <span className="text-white font-bold text-sm">N</span>
+            <span className="text-white font-bold text-sm">A</span>
           </div>
-          <span className="font-semibold text-gray-900 dark:text-white">NEXUS</span>
+          <span className="font-semibold text-gray-900 dark:text-white">AEQUALIS</span>
         </div>
         <button
           onClick={handleSkip}
@@ -157,7 +157,7 @@ export default function OnboardingPage() {
                 </svg>
               </div>
               <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-                Welcome to NEXUS!
+                Welcome to AEQUALIS!
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
                 Let&apos;s get you set up in just a few minutes. We&apos;ll help you configure your workspace for success.

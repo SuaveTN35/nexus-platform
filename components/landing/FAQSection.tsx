@@ -33,7 +33,7 @@ const faqs = [
   },
   {
     question: 'How does the AI actually work?',
-    answer: 'Our AI is built into every feature, not bolted on. It analyzes your data to score leads, predict deal outcomes, optimize send times, and automate routine tasks. The more you use NEXUS, the smarter it gets.',
+    answer: 'Our AI is built into every feature, not bolted on. It analyzes your data to score leads, predict deal outcomes, optimize send times, and automate routine tasks. The more you use AEQUALIS, the smarter it gets.',
   },
 ];
 

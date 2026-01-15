@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * API Client for NEXUS Platform
+ * API Client for AEQUALIS Platform
  * Centralized API request handling
  */
 
